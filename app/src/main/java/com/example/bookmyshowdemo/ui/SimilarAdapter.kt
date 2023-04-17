@@ -11,10 +11,12 @@ import com.example.bookmyshowdemo.R
 import com.example.bookmyshowdemo.data.Constant
 import com.example.bookmyshowdemo.data.model.Credit
 import com.example.bookmyshowdemo.data.model.Movie
+import com.example.bookmyshowdemo.databinding.ReviewItemLayoutBinding
+import com.example.bookmyshowdemo.databinding.SimilarItemLayoutBinding
 
 class SimilarAdapter(private val context: Context, private val similarList: List<Movie>) :
     RecyclerView.Adapter<SimilarAdapter.MovieViewHolder>() {
-
+    private lateinit var binding: SimilarItemLayoutBinding
     // Define the ViewHolder class
     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         // Define the views in the item layout
@@ -24,15 +26,15 @@ class SimilarAdapter(private val context: Context, private val similarList: List
 
     // Override onCreateViewHolder to inflate the item layout and create a ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.similar_item_layout, parent, false)
-        return MovieViewHolder(itemView)
+        binding = SimilarItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MovieViewHolder(binding.root)
     }
 
     // Override onBindViewHolder to set the data for each item in the list
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val movie = similarList[position]
-        holder.name.text = movie.original_title
-        holder.pic.loadImageFromUrl(Constant.BASE_URL_IMAGE+movie.poster_path)
+        binding.tvName.text = movie.original_title
+        binding.imgPoster.loadImageFromUrl(Constant.BASE_URL_IMAGE+movie.poster_path)
     }
 
     // Override getItemCount to return the number of items in the list

@@ -10,34 +10,31 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bookmyshowdemo.R
 import com.example.bookmyshowdemo.data.Constant
 import com.example.bookmyshowdemo.data.model.Credit
+import com.example.bookmyshowdemo.databinding.CreditItemLayoutBinding
+import com.example.bookmyshowdemo.databinding.MovieItemLayoutBinding
 
 class CreditsAdapter(private val context: Context, private val creditList: List<Credit>, private val isCast:Boolean) :
     RecyclerView.Adapter<CreditsAdapter.MovieViewHolder>() {
-
+    private lateinit var binding: CreditItemLayoutBinding
     // Define the ViewHolder class
-    class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        // Define the views in the item layout
-        val name: TextView = itemView.findViewById(R.id.tvName)
-        val character: TextView = itemView.findViewById(R.id.tvCharacter)
-        val pic: ImageView = itemView.findViewById(R.id.imgPoster)
-    }
+    class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     // Override onCreateViewHolder to inflate the item layout and create a ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.credit_item_layout, parent, false)
-        return MovieViewHolder(itemView)
+        binding = CreditItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MovieViewHolder(binding.root)
     }
 
     // Override onBindViewHolder to set the data for each item in the list
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val movie = creditList[position]
-        holder.name.text = movie.name
+        binding.tvName.text = movie.name
         if(isCast){
-            holder.character.text = movie.character
+            binding.tvCharacter.text = movie.character
         }else{
-            holder.character.text = movie.job
+            binding.tvCharacter.text = movie.job
         }
-        holder.pic.loadImageFromUrl(Constant.BASE_URL_IMAGE+movie.profile_path)
+        binding.imgPoster.loadImageFromUrl(Constant.BASE_URL_IMAGE+movie.profile_path)
     }
 
     // Override getItemCount to return the number of items in the list

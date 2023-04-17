@@ -16,34 +16,28 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.bookmyshowdemo.R
 import com.example.bookmyshowdemo.data.Constant
 import com.example.bookmyshowdemo.data.model.Movie
+import com.example.bookmyshowdemo.databinding.MovieItemLayoutBinding
 
 class MovieListAdapter(private val context: Context, private var movieList: ArrayList<Movie>,private val onItemClickListener:OnItemClickListener) :
     RecyclerView.Adapter<MovieListAdapter.MovieViewHolder>() {
-
+    private lateinit var binding: MovieItemLayoutBinding
     // Define the ViewHolder class
-    class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        // Define the views in the item layout
-        val movieTitle: TextView = itemView.findViewById(R.id.tvTitle)
-        val movieReleaseDate: TextView = itemView.findViewById(R.id.tvReleaseDate)
-        val movieImage: ImageView = itemView.findViewById(R.id.imgPoster)
-        val movieCard: CardView = itemView.findViewById(R.id.cardView)
-    }
+    class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     // Override onCreateViewHolder to inflate the item layout and create a ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.movie_item_layout, parent, false)
-        return MovieViewHolder(itemView)
+        binding = MovieItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MovieViewHolder(binding.root)
     }
 
     // Override onBindViewHolder to set the data for each item in the list
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val movie = movieList[position]
-        holder.movieTitle.text = movie.original_title
-        holder.movieReleaseDate.text = movie.release_date
-        holder.movieImage.loadImageFromUrl(Constant.BASE_URL_IMAGE+movie.poster_path)
+        binding.tvTitle.text = movie.original_title
+        binding.tvReleaseDate.text = movie.release_date
+        binding.imgPoster.loadImageFromUrl(Constant.BASE_URL_IMAGE+movie.poster_path)
 
-
-        holder.movieCard.setOnClickListener {
+        binding.cardView.setOnClickListener {
             onItemClickListener.onItemClick(movie.id)
         }
     }
